@@ -1,4 +1,5 @@
 import curses
+import random
 from curses import textpad
 class Frame:
     screen = 0
@@ -49,8 +50,8 @@ class Frame:
                 while choice != 'y' and choice != 'n':
                     choice = self.healBox.getkey()
                 if (choice == 'y'):
-                    # do something
-                    print("todo")
+                    #need some kind of outside logic because cant see ship here
+                    return 'heal'
                 else:
                     self.healBox.clear()
                     self.printScreen()
@@ -64,8 +65,8 @@ class Frame:
                 while choice != 'y' and choice != 'n':
                     choice = self.shopBox.getkey()
                 if (choice == 'y'):
-                    # do something
-                    print("todo")
+                    self.shopEvent()
+                    return 'shop'
                 else:
                     self.shopBox.clear()
                     self.printScreen()
@@ -79,8 +80,7 @@ class Frame:
                 while choice != 'y' and choice != 'n':
                     choice = self.upgBox.getkey()
                 if (choice == 'y'):
-                    # do something
-                    print("todo")
+                    return 'upgrade'
                 else:
                     self.upgBox.clear()
                     self.printScreen()
@@ -95,8 +95,7 @@ class Frame:
                 while choice != 'y' and choice != 'n':
                     choice = self.conBox.getkey()
                 if (choice == 'y'):
-                    # do something
-                    print("todo")
+                    return 'configure'
                 else:
                     self.conBox.clear()
                     self.printScreen()
@@ -105,7 +104,57 @@ class Frame:
         self.inbetweenBox.getch()
         
         
-        
+    def shopEvent(self):
+        choice = 0
+        # Add more Items
+        shopItems = {1: '+2 Health',
+                     2: '+2 Armor',
+                     3: '+1 Max Health',
+                     4: '+1 Armor each round',
+                     5: 'Rockets (1)',
+                     6: 'Dodge Ability (space)',
+                     7: 'Blue Ship Skin',
+                     8: 'Pink Ship Skin',
+                     9: 'Green Ship Skin',
+                     10: 'Red Ship Skin'
+                     }
+        inShop = random.sample(range(1, 10), 6)
+        self.inbetweenBox.clear()
+        self.inbetweenBox.box()
+        item1 = self.inbetweenBox.subwin(10, 26, 1, 1)
+        item1.addstr(5, 2, shopItems[inShop[0]])
+        item1.addstr(6, 2, '[1]')
+        item1.box()
+        item2 = self.inbetweenBox.subwin(10, 26, 1, 27)
+        item2.addstr(5, 2, shopItems[inShop[1]])
+        item2.addstr(6, 2, '[2]')
+        item2.box()
+        item3 = self.inbetweenBox.subwin(10, 26, 1, 53)
+        item3.addstr(5, 2, shopItems[inShop[2]])
+        item3.addstr(6, 2, '[3]')
+        item3.box()
+        item4 = self.inbetweenBox.subwin(10, 26, 11, 1)
+        item4.addstr(5, 2, shopItems[inShop[3]])
+        item4.addstr(6, 2, '[4]')
+        item4.box()
+        item5 = self.inbetweenBox.subwin(10, 26, 11, 27)
+        item5.addstr(5, 2, shopItems[inShop[4]])
+        item5.addstr(6, 2, '[5]')
+        item5.box()
+        item6 = self.inbetweenBox.subwin(10, 26, 11, 53)
+        item6.addstr(5, 2, shopItems[inShop[5]])
+        item6.addstr(6, 2, '[6]')
+        item6.box()
+        self.inbetweenBox.addstr(22, 34, "Leave: [Esc]")
+        self.inbetweenBox.refresh()
+        while (choice != 49 and choice != 50 and choice != 51 and choice != 52
+        and choice != 53 and choice != 54 and choice != 27):
+            choice = self.inbetweenBox.getch()
+        # match choice:
+        #     case 49:
+                
+            
+        self.inbetweenBox.getch()
 
 
     

@@ -6,7 +6,7 @@ def main():
     curses.noecho()
     curses.cbreak()
     stdscr.keypad(True)
-    stdscr.border()
+    stdscr.box()
 
     stdscr.addstr(0, 0, str(curses.has_colors()))
     stdscr.addstr(2, 4, str(curses.has_extended_color_support()))
@@ -15,9 +15,6 @@ def main():
     stdscr.addstr(5, 6, '[i] inbetween')
 
     stdscr.refresh()
-    inBetween = Frame(stdscr)
-    inBetween.printScreen()
-    inBetween.makeSelection()
     stdscr.getkey()
     curses.endwin()
 
