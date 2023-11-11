@@ -1,5 +1,6 @@
 from shot import Shot
 from attack import Attack
+import curses
 
 class Ship():
     health: int
@@ -9,7 +10,7 @@ class Ship():
     attackprotos:list
     attackIdx:int
 
-    def __init__(self, x, y ):
+    def __init__(self, y, x):
         self.health = 5
         self.speed = 1
         self.posX = x
@@ -18,15 +19,19 @@ class Ship():
         self.attackprotos = []
         self.attackprotos.append(Attack(1,1)) # basic attack
 
-    def move(self, dir:str):
-        if(dir == 'n'):
-            self.posY += 1 * self.speed
+    def move(self, dir):
+        if(dir == 'w'):
+            if(self.posY > 1):
+                self.posY -= 1 * self.speed
         elif(dir == 's'):
-            self.posY -= 1 * self.speed
-        elif(dir == 'w'):
-            self.posX -= 1 * self.speed
-        elif(dir == 'e'):
-            self.posX += 1 * self.speed
+            if(self.posY < 22):
+                self.posY += 1 * self.speed
+        elif(dir == 'a'):
+            if(self.posX > 1):
+                self.posX -= 1 * self.speed
+        elif(dir == 'd'):
+            if(self.posX < 79):
+                self.posX += 1 * self.speed
 
         return (self.posX, self.posY)
     
@@ -38,6 +43,8 @@ class Ship():
             return True
         else:
             return False
+        
+
     
 
         
