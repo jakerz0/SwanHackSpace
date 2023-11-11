@@ -9,7 +9,7 @@ class Ship():
     attackprotos:list
     attackIdx:int
 
-    def __init__(self, x, y ):
+    def __init__(self, y, x):
         self.health = 5
         self.speed = 1
         self.posX = x
@@ -38,6 +38,12 @@ class Ship():
             return True
         else:
             return False
+        
+    def getX(self):
+        return self.posX
+    
+    def getY(self):
+        return self.posY
     
 
         
