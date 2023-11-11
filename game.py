@@ -1,12 +1,12 @@
 import curses
-from inbetween import Frame
+
 def main():
 
     stdscr = curses.initscr()
     curses.noecho()
     curses.cbreak()
     stdscr.keypad(True)
-    stdscr.box()
+    stdscr.border()
 
     stdscr.addstr(0, 0, str(curses.has_colors()))
     stdscr.addstr(2, 4, str(curses.has_extended_color_support()))
