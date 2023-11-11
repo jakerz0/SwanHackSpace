@@ -20,14 +20,18 @@ class Ship():
         self.attackprotos.append(Attack(1,1)) # basic attack
 
     def move(self, dir):
-        if(dir == 'u'):
-            self.posY -= 1 * self.speed
+        if(dir == 'w'):
+            if(self.posY > 1):
+                self.posY -= 1 * self.speed
+        elif(dir == 's'):
+            if(self.posY < 22):
+                self.posY += 1 * self.speed
+        elif(dir == 'a'):
+            if(self.posX > 1):
+                self.posX -= 1 * self.speed
         elif(dir == 'd'):
-            self.posY += 1 * self.speed
-        elif(dir == 'l'):
-            self.posX -= 1 * self.speed
-        elif(dir == 'r'):
-            self.posX += 1 * self.speed
+            if(self.posX < 79):
+                self.posX += 1 * self.speed
 
         return (self.posX, self.posY)
     

@@ -47,19 +47,16 @@ def main():
         printMap(r,stdscr)
         stdscr.refresh()
         userInput = stdscr.getkey()
-        if(userInput == curses.KEY_UP):
-            stdscr.addstr(2,5,"went up")
-            r.player.move('u')
-            stdscr.addstr(0,0,str(r.player.posY))
-            stdscr.refresh()
-        if(userInput == curses.KEY_DOWN):
-            r.player.move('d')
-            stdscr.addstr(0,0,str(r.player.posX))
-        printMap(r,stdscr)
-        stdscr.refresh()
-        time.sleep(1)
+        if(userInput == 'w'):
+            r.player.move(userInput)
+        if(userInput == 's'):
+            r.player.move(userInput)
         stdscr.clear()
         stdscr.box()
+        printMap(r,stdscr)
+        stdscr.refresh()
+        time.sleep(0.2)
+        
 
 
 
