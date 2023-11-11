@@ -12,11 +12,12 @@ def parsescore(f: list):
 
 def main():
 
-    stdscr = curses.initscr()
+    curses.initscr()
+    stdscr = curses.newwin(24, 80)
     curses.noecho()
     curses.cbreak()
     stdscr.keypad(True)
-    # stdscr.border()
+    stdscr.box()
 
     startup(stdscr)
 
