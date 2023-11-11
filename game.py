@@ -1,4 +1,5 @@
 import curses
+from ship import Ship
 
 def parsescore(f: list):
     ret: str
@@ -23,8 +24,6 @@ def main():
     stdscr.addstr(3, 6, '[s] Start Game')
     stdscr.addstr(4, 6, '[h] High Score: ' + highscore[1].strip() + ' -- ' + highscore[0].strip())
     stdscr.addstr(5, 6, '[i] inbetween')
-
-    
 
     stdscr.refresh()
     stdscr.getkey()
