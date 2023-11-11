@@ -10,7 +10,9 @@ def main():
 
     stdscr.addstr(0, 0, str(curses.has_colors()))
     stdscr.addstr(2, 4, str(curses.has_extended_color_support()))
-    stdscr.addstr(3, 6, 'piece of text')
+    stdscr.addstr(3, 6, '[s] Start Game')
+    stdscr.addstr(4, 6, '[h] High Score: ')
+    stdscr.addstr(5, 6, '[i] inbetween')
 
     stdscr.refresh()
     stdscr.getkey()
