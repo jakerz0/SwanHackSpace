@@ -15,8 +15,9 @@ def main():
     stdscr.addstr(5, 6, '[i] inbetween')
 
     stdscr.refresh()
-    screen = Frame(stdscr)
-    screen.printScreen()
+    inBetween = Frame(stdscr)
+    inBetween.printScreen()
+    inBetween.makeSelection()
     stdscr.getkey()
     curses.endwin()
 
