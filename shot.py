@@ -1,19 +1,21 @@
 
-class shot():
+class Shot():
     dmg:int
     posX:int
     posY:int
     speed:int
 
-    def __init__(self, attack):
+    def __init__(self, attack, x, y):
         self.dmg = attack.dmg
         self.speed = attack.spd
+        self.posX = x
+        self.posY = y
     
     def collide(self, target):
         target.health -= self.dmg
 
     def move(self, dir:str):
-        if(dir == 'u'):
+        if(dir == 'n'):
             self.posY += 1 * self.speed
         elif(dir == 's'):
             self.posY -= 1 * self.speed

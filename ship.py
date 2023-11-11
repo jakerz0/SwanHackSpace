@@ -1,5 +1,5 @@
-import shot
-import attack
+from shot import Shot
+from attack import Attack
 
 class Ship():
     health: int
@@ -15,10 +15,11 @@ class Ship():
         self.posX = x
         self.posY = y
         self.attackIdx = 0
-        self.attackprotos.add(attack(1,1))
+        self.attackprotos = []
+        self.attackprotos.append(Attack(1,1)) # basic attack
 
     def move(self, dir:str):
-        if(dir == 'u'):
+        if(dir == 'n'):
             self.posY += 1 * self.speed
         elif(dir == 's'):
             self.posY -= 1 * self.speed
@@ -30,7 +31,13 @@ class Ship():
         return (self.posX, self.posY)
     
     def attack(self):
-        return shot(self.attack[self.attackIdx])
+        return Shot(self.attackprotos[self.attackIdx], self.posX, self.posY)
+    
+    def isDead(self):
+        if(self.health <= 0):
+            return True
+        else:
+            return False
     
 
         

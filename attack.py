@@ -1,5 +1,5 @@
 
-class attack():
+class Attack():
     spd: int
     dmg: int
 
