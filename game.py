@@ -1,5 +1,5 @@
 import curses
-
+from inbetween import Frame
 def main():
 
     stdscr = curses.initscr()
@@ -15,8 +15,11 @@ def main():
     stdscr.addstr(5, 6, '[i] inbetween')
 
     stdscr.refresh()
+    screen = Frame(stdscr)
+    screen.printScreen()
     stdscr.getkey()
     curses.endwin()
+
 
 
 
