@@ -1,5 +1,6 @@
 from ship import Ship
 import curses
+import time
 
 class Round:
     enemyShips = []
@@ -25,20 +26,43 @@ class Round:
         self.generatePlayer()
 
 
+def printMap(roundObject,std):
+    for s in roundObject.enemyShips:
+        std.addstr(s.posY,s.posX,"<")
+    std.addstr(roundObject.player.posY,roundObject.player.posX,">")
 
 def main():
-    stdscr = curses.initscr()
+    curses.initscr()
+    stdscr = curses.newwin(24, 80)
     curses.noecho()
     curses.cbreak()
     stdscr.keypad(True)
-    stdscr.border()
+    stdscr.box()
     r = Round(1)
     r.generateRound()
-    for s in r.enemyShips:
-        stdscr.addstr(s.posX,s.posY,"<")
-
+    
+    printMap(r,stdscr)
     stdscr.refresh()
-    stdscr.getkey()
+    while(True):
+        printMap(r,stdscr)
+        stdscr.refresh()
+        userInput = stdscr.getkey()
+        if(userInput == curses.KEY_UP):
+            stdscr.addstr(2,5,"went up")
+            r.player.move('u')
+            stdscr.addstr(0,0,str(r.player.posY))
+            stdscr.refresh()
+        if(userInput == curses.KEY_DOWN):
+            r.player.move('d')
+            stdscr.addstr(0,0,str(r.player.posX))
+        printMap(r,stdscr)
+        stdscr.refresh()
+        time.sleep(1)
+        stdscr.clear()
+        stdscr.box()
+
+
+
     curses.endwin()
 
 
