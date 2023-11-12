@@ -23,7 +23,9 @@ class Round:
 
     def generateRound(self):
         self.generateEnemies()
-        self.generatePlayer()
+        #self.generatePlayer()
+
+    def startRound(self):
 
 
 def printMap(roundObject,std):
