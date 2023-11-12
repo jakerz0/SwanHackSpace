@@ -4,6 +4,7 @@ from attack import Attack
 from startup import startup
 from rounds import Round
 from match import Match
+from loading import doLoading
 # Bugs found: need to make money reset after game, make box appear after lose game and restart
 
 def parsescore(f: list):
@@ -36,6 +37,7 @@ def main():
         
         match choice:
             case 'g':
+                doLoading(stdscr)
                 m = Match(stdscr, playerShip)
                 m.run()
             case 'q':

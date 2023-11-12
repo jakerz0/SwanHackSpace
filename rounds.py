@@ -11,6 +11,7 @@ class Round:
     player = 0
     lastTime = 0
     currentTime = 0
+    stars = []
     global isBossLevel
     
     def __init__ (self,roundNumber,player):
@@ -163,17 +164,25 @@ class Round:
     
     
     def start(self, window):
+        # star positions
+        for i in range(10):
+            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '*'))
+        for i in range(15):
+            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '.'))
+        for i in range(10):
+            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '\u2727'))
+
         curses.noecho()
         curses.cbreak()
         window.nodelay(True)
         window.keypad(True)
-        printMap(self,window)
+        printMap(self,window,self.stars)
         window.box()
         window.refresh()
         playerHit = False
         ret = 0
         while(ret == 0):
-            printMap(self,window)
+            printMap(self,window,self.stars)
             window.refresh()
             try:
                 userInput = window.getkey()
@@ -187,7 +196,7 @@ class Round:
                 pass
             window.clear()
             window.box()
-            printMap(self,window)
+            printMap(self,window,self.stars)
             window.refresh()
             self.currentTime = time.time()
             if((self.currentTime - self.lastTime) > 0.05):
@@ -209,7 +218,7 @@ class Round:
             
             window.clear()
             window.box()
-            printMap(self,window)
+            printMap(self,window,self.stars)
             window.refresh()
         self.enemyShips.clear()
         self.attacks.clear()
@@ -222,8 +231,10 @@ def bossprint(bossShip, std):
         for j in range(-1,2):
             std.addstr(bossShip.posY + i, bossShip.posX + j, bossShip.icon)
 
-def printMap(roundObject,std):
+def printMap(roundObject,std,stars):
     global isBossLevel
+    for s in stars:
+        std.addstr(s[0],s[1],s[2])
     for s in roundObject.enemyShips:
         std.addstr(s.posY,s.posX,s.icon)
         if isBossLevel:

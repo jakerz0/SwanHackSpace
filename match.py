@@ -13,6 +13,7 @@ class Match():
     f: Frame
     player: Ship
     window = 0
+    stars = []
     
 
     def __init__(self, window, player):
@@ -24,7 +25,7 @@ class Match():
 
     def run(self):
         self.window.clear()
-        roundnumber = 6
+        roundnumber = 1
         while not self.lost:
             r = Round(roundnumber, self.player)
             r.generateRound()
