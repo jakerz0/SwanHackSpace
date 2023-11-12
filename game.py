@@ -27,7 +27,7 @@ def main():
 
         
         match choice:
-            case 's':
+            case 'g':
                 m = Match(stdscr, playerShip)
                 m.run()
             case 'q':

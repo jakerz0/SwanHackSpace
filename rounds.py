@@ -158,7 +158,7 @@ class Round:
                     self.player.move(userInput)
                 if(userInput == 's'):
                     self.player.move(userInput)
-                if(userInput == 'c'):
+                if(userInput == ' '):
                     self.fireCannon()
             except curses.error:
                 pass

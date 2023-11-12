@@ -6,6 +6,7 @@ class Ship():
     health: int
     maxHealth: int
     armor: int
+    colorCode: int
     speed: int
     money: int
     score: int
