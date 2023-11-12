@@ -1,5 +1,6 @@
 from ship import Ship
 from shot import Shot
+from trash import Trash
 import curses
 import time
 import random
@@ -13,6 +14,7 @@ class Round:
     currentTime = 0
     stars = []
     global isBossLevel
+    trash = []
     
     def __init__ (self,roundNumber,player):
         global isBossLevel
@@ -166,6 +168,28 @@ class Round:
                     return True #return true that it made it to the other end
         return False
     
+
+    def trashMaker(self):
+        #create the trash if we don't have any
+        if(len(self.trash) < 3):
+            if(len(self.trash) % 2 == 0):
+                if(random.random() > 0.5):
+                    self.trash.append(Trash(78,((random.random() * 487) % 22) + 1, 'a',"\u2727"))
+                else:
+                    self.trash.append(Trash(1,((random.random() * 487) % 22) + 1, 'd', "\u2727"))
+            else:
+                if(random.random() > 0.5):
+                    self.trash.append(Trash(78,((random.random() * 487) % 22) + 1, 'a','o'))
+                else:
+                    self.trash.append(Trash(1,((random.random() * 487) % 22) + 1, 'd', 'o'))
+
+    def trashMover(self):
+        for t in self.trash:
+            t.move()
+            if(t.posX > 78 or t.posX < 1):
+                self.trash.remove(t)
+
+
     
     def start(self, window):
         # star positions
@@ -238,6 +262,8 @@ class Round:
                     ret = -1
                 elif len(self.enemyShips) > 0 and isBossLevel and self.bossMove():
                     ret = -1
+                self.trashMover()
+                self.trashMaker()
                 self.lastTime = time.time()
 
             
@@ -247,6 +273,7 @@ class Round:
             window.refresh()
         self.enemyShips.clear()
         self.attacks.clear()
+        self.trash.clear()
         return ret
     
 
@@ -258,14 +285,31 @@ def bossprint(bossShip, std):
 
 def printMap(roundObject,std,stars):
     global isBossLevel
+
+    for t in roundObject.trash:
+        if(t.direction == 'a'):
+            std.addstr(int(t.posY),int(t.posX),str(t.head) + "=-")
+        if(t.direction == 'd'):
+            std.addstr(int(t.posY),int(t.posX), "-=" + str(t.head))
+
     for s in stars:
         std.addstr(s[0],s[1],s[2], curses.color_pair(s[3]))
+
     for s in roundObject.enemyShips:
         std.addstr(s.posY,s.posX,s.icon)
         if isBossLevel:
             bossprint(s,std)
     std.addstr(roundObject.player.posY,roundObject.player.posX,">", curses.color_pair(roundObject.player.colorCode))
     for a in roundObject.attacks:
+
+        std.addstr(a.posY,a.posX,"~")
+    for t in roundObject.trash:
+        if(t.direction == 'a'):
+            std.addstr(int(t.posY),int(t.posX),str(t.head) + "=-")
+        if(t.direction == 'd'):
+            std.addstr(int(t.posY),int(t.posX), "-=" + str(t.head))
+    std.addstr(0,5, " Health:" + "\u2764" * roundObject.player.health +" ", curses.color_pair(2))
+
         if a.dmg == 3:
             std.addstr(a.posY,a.posX,"\u2e27", curses.color_pair(1))
         elif a.dmg == 2:
@@ -274,6 +318,7 @@ def printMap(roundObject,std,stars):
             std.addstr(a.posY,a.posX,"~")
     std.addstr(0,5, " Health:" + "\u2764" * roundObject.player.armor, curses.color_pair(3))
     std.addstr(0, (13 + roundObject.player.armor), "\u2764" * (roundObject.player.health - roundObject.player.armor) + " ", curses.color_pair(2)) 
+
     std.addstr(0,26, " Round: " + str(roundObject.roundNumber) + " ", curses.color_pair(3))
     std.addstr(0,46, " Score: " + str(roundObject.player.score) + " ", curses.color_pair(6))
     std.addstr(0,64, " Money: $" + str(roundObject.player.money) + " ", curses.color_pair(4))
