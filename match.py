@@ -25,7 +25,7 @@ class Match():
         self.window.clear()
         roundnumber = 1
         while not self.lost:
-            r = Round(roundnumber, self.player)
+            r = Round(6, self.player)
             r.generateRound()
             result = r.start(self.window)
             if result == -1:
