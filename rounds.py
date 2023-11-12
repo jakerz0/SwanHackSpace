@@ -82,9 +82,6 @@ def printMap(roundObject,std):
 #         printMap(r,stdscr)
 #         stdscr.refresh()
 #         time.sleep(0.2)
-        
-
-
 
     # curses.endwin()
 
