@@ -3,6 +3,7 @@ from ship import Ship
 from inbetween import Frame
 import curses
 import time
+import random
 
 
 
@@ -32,6 +33,7 @@ class Match():
                 self.lost = True
                 break
             
+            self.player.money += (roundnumber + random.randrange(roundnumber) + 1)
             if roundnumber == 6: break
 
             # in between screen
