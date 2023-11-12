@@ -1,4 +1,3 @@
-
 def startup(window):
 
     score = open('highscore.txt', 'r')
@@ -26,3 +25,10 @@ def startup(window):
     window.addstr(20,1, "./ /___\ |_/ / /^\ \/ /^\ \ ")
     window.addstr(21,1, "\_____/ \___/\/   \/\/   \/")
 
+    while(True):
+        ret = window.getkey()
+        if(ret == 'i' or ret == 'h' or ret == 's'):
+            break
+    
+    
+    return ret

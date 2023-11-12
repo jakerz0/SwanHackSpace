@@ -9,8 +9,9 @@ class Ship():
     posY: int
     attackprotos:list
     attackIdx:int
+    isPlayer: bool
 
-    def __init__(self, y, x):
+    def __init__(self, y, x, p):
         self.health = 5
         self.speed = 1
         self.posX = x
@@ -18,6 +19,7 @@ class Ship():
         self.attackIdx = 0
         self.attackprotos = []
         self.attackprotos.append(Attack(1,1)) # basic attack
+        self.isPlayer = p
 
     def move(self, dir):
         if(dir == 'w'):

@@ -1,6 +1,7 @@
 import curses
 import random
 from curses import textpad
+from match import playerShip
 class Frame:
     screen = 0
     inbetweenBox = 0
@@ -15,6 +16,7 @@ class Frame:
         self.inbetweenBox = curses.newwin(maxY, maxX)
 
     def printScreen(self):
+        global playerShip
         self.screen.border(0)
         self.inbetweenBox.box()
         self.healBox = self.inbetweenBox.subwin(11, 39, 1, 1)
@@ -33,6 +35,7 @@ class Frame:
         self.conBox.box()
         self.conBox.addstr(5, 16, "Configure")
         self.conBox.addstr(6, 19, "[C]")
+        self.inbetweenBox.addstr(1, 1, str(playerShip.isPlayer))
         self.inbetweenBox.refresh()
     
     def makeSelection(self):
