@@ -24,7 +24,6 @@ class Match():
     def run(self):
         self.window.clear()
         roundnumber = 1
-        self.lost = True
         while not self.lost:
             r = Round(roundnumber, self.player)
             r.generateRound()
@@ -33,7 +32,7 @@ class Match():
                 self.lost = True
                 break
             
-
+            if roundnumber == 6: break
 
             # in between screen
             roundnumber += 1
@@ -59,7 +58,7 @@ class Match():
             self.window.addstr(1,1, "Game Over - you won!!")
         self.window.addstr(3,1, "HIGH SCORE: " + highscore[1] + " [" + highscore[0].strip() + "]")
         self.window.addstr(4,1, "YOUR SCORE: " + str(self.player.score))
-        if int(highscore[1]) < self.player.score or True:
+        if int(highscore[1]) < self.player.score:
             self.window.addstr(6,1, "New high score, please enter your name: ")
             self.window.move(6, 42)
             inkey = ''

@@ -123,11 +123,12 @@ class Frame:
                     while choice != '1' and choice != '2' and choice != '3':
                         choice = self.inbetweenBox.getkey()
                     match choice:
-                        case 1:
-                            playerShip.maxHealth += 1
-                        case 2:
+                        case '1':
+                            playerShip.maxHealth = playerShip.maxHealth + 1
+                            playerShip.health = playerShip.health + 1
+                        case '2':
                             playerShip.attackprotos[0].dmg += 1
-                        case 3:
+                        case '3':
                             playerShip.barriers += 1
                     return 'upgrade'
                 else:

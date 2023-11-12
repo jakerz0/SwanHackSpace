@@ -132,7 +132,7 @@ class Round:
                                     if(e.health == 0):
                                         self.enemyShips.remove(e)
                                     self.attacks.remove(a)
-                                    self.player.score += e.damage
+                                    self.player.score += 20
 
                             if(e.posX == a.posX and e.posY == a.posY): #if it hits, remove the ship and attack from respective arrays
                                 e.health -= 1
