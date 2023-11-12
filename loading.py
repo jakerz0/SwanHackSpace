@@ -39,6 +39,6 @@ def doLoading(window):
     window.addstr(11, 22, 'w: move up')
     window.addstr(12, 22, 's: move down')
     window.addstr(13, 22, 'SPACE: shoot cannon')
-    window.addstr(14, 22, 'b: raise shield')
+    # window.addstr(14, 22, 'b: raise shield')
     window.addstr(18, 33, 'Loading ')
     percentage(window)

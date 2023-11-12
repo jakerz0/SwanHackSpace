@@ -129,7 +129,7 @@ class Round:
                         if(playerHit):
                             return True
             else: #for when the player fires
-                if(a.posX == 79):
+                if(a.posX >= 78):
                     self.attacks.remove(a)
                 else:
                     didCollide1 = False
@@ -301,21 +301,18 @@ def printMap(roundObject,std,stars):
             bossprint(s,std)
     std.addstr(roundObject.player.posY,roundObject.player.posX,">", curses.color_pair(roundObject.player.colorCode))
     for a in roundObject.attacks:
+        if a.dmg == 3:
+            std.addstr(a.posY,a.posX,"\u2e27", curses.color_pair(1))
+        elif a.dmg == 2:
+            std.addstr(a.posY,a.posX,"\u2301", curses.color_pair(2))
+        else:
+            std.addstr(a.posY,a.posX,"~")
 
-        std.addstr(a.posY,a.posX,"~")
     for t in roundObject.trash:
         if(t.direction == 'a'):
             std.addstr(int(t.posY),int(t.posX),str(t.head) + "=-")
         if(t.direction == 'd'):
             std.addstr(int(t.posY),int(t.posX), "-=" + str(t.head))
-    std.addstr(0,5, " Health:" + "\u2764" * roundObject.player.health +" ", curses.color_pair(2))
-
-        if a.dmg == 3:
-            std.addstr(a.posY,a.posX,"\u2e27", curses.color_pair(1))
-        elif a.dmg == 2:
-            std.addstr(a.posY,a.posX,"-", curses.color_pair(2))
-        else:
-            std.addstr(a.posY,a.posX,"~")
     std.addstr(0,5, " Health:" + "\u2764" * roundObject.player.armor, curses.color_pair(3))
     std.addstr(0, (13 + roundObject.player.armor), "\u2764" * (roundObject.player.health - roundObject.player.armor) + " ", curses.color_pair(2)) 
 

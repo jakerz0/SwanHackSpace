@@ -118,8 +118,8 @@ class Frame:
                     self.inbetweenBox.box()
                     self.inbetweenBox.addstr(1, 1, "What would you like to upgrade?")
                     self.inbetweenBox.addstr(2, 1, "[1] Max Health + 1")
-                    self.inbetweenBox.addstr(3, 1, "[2] Damage + 1")
-                    self.inbetweenBox.addstr(4, 1, "[3] Barrier Charges + 1")
+                    self.inbetweenBox.addstr(3, 1, "[2] Basic Attack Damage + 1")
+                    # self.inbetweenBox.addstr(4, 1, "[3] Barrier Charges + 1")
                     while choice != '1' and choice != '2' and choice != '3':
                         choice = self.inbetweenBox.getkey()
                     match choice:

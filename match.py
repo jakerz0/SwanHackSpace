@@ -67,7 +67,7 @@ class Match():
             inkey = ''
             newName = ''
             inc = 0
-            while(inc < 3):
+            while(inc < 5):
                 inkey = self.window.getch()
                 newName += str(chr(inkey))
                 self.window.addstr(6,42, newName)
