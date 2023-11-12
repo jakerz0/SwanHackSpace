@@ -2,7 +2,6 @@ import curses
 from ship import Ship
 from attack import Attack
 from startup import startup
-# from inbetween import Frame
 from rounds import Round
 from match import Match
 

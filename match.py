@@ -2,6 +2,7 @@ from rounds import Round
 from ship import Ship
 from inbetween import Frame
 import curses
+import time
 
 
 
@@ -41,11 +42,13 @@ class Match():
 
 
     def gameOverScreen(self):
+        self.window.nodelay(False)
         self.window.clear()
         self.window.box()
         self.window.addstr(1,1, "Game Over - you lost :(")
         self.window.addstr(3,1, "HIGH SCORE: " + str(-1))
         self.window.addstr(4,1, "YOUR SCORE: " + str(0))
+        self.window.refresh()
         self.window.getch()
         self.window.clear()
-        self.window.refresh()
+

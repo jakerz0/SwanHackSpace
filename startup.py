@@ -1,3 +1,4 @@
+import curses
 def startup(window):
 
     score = open('highscore.txt', 'r')
@@ -25,10 +26,12 @@ def startup(window):
     window.addstr(20,1, "./ /___\ |_/ / /^\ \/ /^\ \ ")
     window.addstr(21,1, "\_____/ \___/\/   \/\/   \/")
 
+    ret = 0
     while(True):
-        ret = window.getkey()
-        if(ret == 'q' or ret == 'h' or ret == 's'):
-            break
-    
-    
+        try:
+            ret = window.getkey()      
+            if(ret == 'q' or ret == 'h' or ret == 's'):
+                break
+        except curses.error:
+            pass
     return ret

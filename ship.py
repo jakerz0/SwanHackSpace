@@ -4,22 +4,32 @@ import curses
 
 class Ship():
     health: int
+    maxHealth: int
+    armor: int
     speed: int
+    money: int
+    barriers: int
     posX: int
     posY: int
     attackprotos:list
     attackIdx:int
     isPlayer: bool
+    itemsUnlocked: list
 
     def __init__(self, y, x, p):
-        self.health = 5
+        self.health = 3
+        self.maxHealth = 3
+        self.armor = 0
         self.speed = 1
+        self.money = 5
+        self.barriers = 1
         self.posX = x
         self.posY = y
         self.attackIdx = 0
         self.attackprotos = []
         self.attackprotos.append(Attack(1,1)) # basic attack
         self.isPlayer = p
+        self.itemsUnlocked = []
 
     def move(self, dir):
         if(dir == 'w'):
