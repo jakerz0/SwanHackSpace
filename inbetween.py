@@ -190,15 +190,16 @@ class Frame:
                      2: ['+2 Armor', 2],
                      3: ['+1 Max Health', 3],
                      4: ['+1 Armor each round', 5],
-                     5: ['Rockets (1)', 5],
+                     5: ['+5 Rockets [j to fire]', 5],
                      6: ['Mines', 5],
                      7: ['Blue Ship Skin', 3],
                      8: ['Pink Ship Skin', 3],
                      9: ['Green Ship Skin', 3],
-                     10: ['Red Ship Skin', 3]
+                     10: ['Red Ship Skin', 3],
+                     11: ['+5 Lasers [k to fire]', 5]
                      }
         if (len(items) == 0):
-            inShop = random.sample(range(1, 10), 6)
+            inShop = random.sample(range(1, 12), 6)
         else:
             inShop = items.copy()
         self.inbetweenBox.clear()
@@ -257,7 +258,7 @@ class Frame:
                     chosen = True
             case 2:
                 if (playerShip.money >= shopItems[2][1] and ((choice + 1) in active)):
-                    playerShip.armor = min(playerShip.maxHealth, playerShip.armor + 2)
+                    playerShip.armor = min(playerShip.health, playerShip.armor + 2)
                     playerShip.money -= shopItems[2][1]
                     chosen = True
             case 3:
@@ -300,6 +301,11 @@ class Frame:
                 if (playerShip.money >= shopItems[10][1] and ((choice + 1) in active)):
                     playerShip.itemsUnlocked.append(10)
                     playerShip.money -= shopItems[10][1]
+                    chosen = True
+            case 11:
+                if (playerShip.money >= shopItems[11][1] and ((choice + 1) in active)):
+                    playerShip.itemsUnlocked.append(11)
+                    playerShip.money -= shopItems[11][1]
                     chosen = True
         if chosen:
             match choice:

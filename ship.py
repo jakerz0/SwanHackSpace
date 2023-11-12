@@ -33,6 +33,8 @@ class Ship():
         self.attackIdx = 0
         self.attackprotos = []
         self.attackprotos.append(Attack(dmg,1)) # basic attack
+        self.attackprotos.append(Attack(3, 1))
+        self.attackprotos.append(Attack(2, 2))
         self.isPlayer = p
         self.itemsUnlocked = []
         self.icon = icon
@@ -55,7 +57,10 @@ class Ship():
     
     def attack(self):
         return Shot(self.attackprotos[self.attackIdx], self.posX, self.posY, self.isPlayer)
-    
+    def rocketAttack(self):
+        return Shot(self.attackprotos[1], self.posX, self.posY, self.isPlayer)
+    def laserAttack(self):
+        return Shot(self.attackprotos[2], self.posX, self.posY, self.isPlayer)
     def isDead(self):
         if(self.health <= 0):
             return True
