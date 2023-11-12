@@ -223,8 +223,9 @@ def printMap(roundObject,std):
     std.addstr(roundObject.player.posY,roundObject.player.posX,">", curses.color_pair(roundObject.player.colorCode))
     for a in roundObject.attacks:
         std.addstr(a.posY,a.posX,"~")
-    std.addstr(0,10, " Health:" + "\u2764" * roundObject.player.health +" ", curses.color_pair(2))
-    std.addstr(0,25, " Round: " + str(roundObject.roundNumber) + " ", curses.color_pair(3))
-    std.addstr(0,40, " Score: " + str(roundObject.player.score) + " ", curses.color_pair(6))
+    std.addstr(0,5, " Health:" + "\u2764" * roundObject.player.health +" ", curses.color_pair(2))
+    std.addstr(0,26, " Round: " + str(roundObject.roundNumber) + " ", curses.color_pair(3))
+    std.addstr(0,46, " Score: " + str(roundObject.player.score) + " ", curses.color_pair(6))
+    std.addstr(0,64, " Money: $" + str(roundObject.player.money) + " ", curses.color_pair(4))
 
 

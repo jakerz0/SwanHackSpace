@@ -4,6 +4,7 @@ from attack import Attack
 from startup import startup
 from rounds import Round
 from match import Match
+# Bugs found: need to make money reset after game, make box appear after lose game and restart
 
 def parsescore(f: list):
     ret: str

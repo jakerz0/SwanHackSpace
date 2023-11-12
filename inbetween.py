@@ -240,7 +240,7 @@ class Frame:
             item6.addstr(6, 2, '[6]')
         item6.box()
         self.inbetweenBox.addstr(22, 34, "Leave: [Esc]")
-        self.inbetweenBox.addstr(21, 34, "Money: " + str(playerShip.money))
+        self.inbetweenBox.addstr(21, 34, "Money: $" + str(playerShip.money))
         self.inbetweenBox.refresh()
         while (choice != 49 and choice != 50 and choice != 51 and choice != 52
         and choice != 53 and choice != 54 and choice != 27):
