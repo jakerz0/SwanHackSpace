@@ -22,6 +22,7 @@ class Ship():
     def __init__(self, y, x, p, spd=1, health=3, icon='<', dmg=1):
         self.health = health
         self.maxHealth = health
+        self.colorCode = 6
         self.armor = 0
         self.speed = spd
         self.money = 5

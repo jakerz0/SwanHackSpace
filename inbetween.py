@@ -86,8 +86,7 @@ class Frame:
                     return 'heal'
                 else:
                     self.healBox.clear()
-                    self.printScreen(playerShip)
-                    self.makeSelection(playerShip)
+                    return '0'
             case 's':
                 self.shopBox.clear()
                 self.shopBox.box()
@@ -105,8 +104,7 @@ class Frame:
                     return 'shop'
                 else:
                     self.shopBox.clear()
-                    self.printScreen(playerShip)
-                    self.makeSelection(playerShip)
+                    return '0'
             case 'u':
                 self.upgBox.clear()
                 self.upgBox.box()
@@ -134,8 +132,7 @@ class Frame:
                     return 'upgrade'
                 else:
                     self.upgBox.clear()
-                    self.printScreen(playerShip)
-                    self.makeSelection(playerShip)
+                    return '0'
             case 'c':
                 self.conBox.clear()
                 self.conBox.box()
@@ -179,10 +176,9 @@ class Frame:
                     return 'configure'
                 else:
                     self.conBox.clear()
-                    self.printScreen(playerShip)
-                    self.makeSelection(playerShip)
-        self.inbetweenBox.refresh()
-        self.inbetweenBox.getch()
+                    return '0'
+        # self.inbetweenBox.refresh()
+        # self.inbetweenBox.getch()
         
         
     def shopEvent(self, active, items, playerShip):
