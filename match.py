@@ -13,6 +13,7 @@ class Match():
     f: Frame
     player: Ship
     window = 0
+    stars = []
     
 
     def __init__(self, window, player):
@@ -54,7 +55,7 @@ class Match():
         self.window.box()
         f = open('highscore.txt', 'r')
         highscore= f.readlines()
-        if not lost:
+        if lost:
             self.window.addstr(1,1, "Game Over - you lost :(")
         else:
             self.window.addstr(1,1, "Game Over - you won!!")

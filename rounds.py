@@ -12,6 +12,7 @@ class Round:
     player = 0
     lastTime = 0
     currentTime = 0
+    stars = []
     global isBossLevel
     trash = []
     
@@ -63,7 +64,8 @@ class Round:
                                             enemies[i][5].strip(), int(enemies[i][4]))
                                         ) # y, x, player?, speed, health, icon, dmg
             
-    
+    bossMoveCounter = 0
+    bossMoveUp = True
     def bossMove(self):
         # for e in self.enemyShips:
         #     if(random.random() * e.speed > 0.9):
@@ -72,19 +74,30 @@ class Round:
         #         else: 
         #             return True #return true that it made it to the other end
         bossShip = self.enemyShips[0]
-        if(bossShip.posY < 4):
-            bossShip.move('s')
-        elif(bossShip.posY > 20):
+        if self.bossMoveUp and random.randrange(10) <= bossShip.speed: 
             bossShip.move('w')
+        elif not self.bossMoveUp and random.randrange(10) <= bossShip.speed:
+            bossShip.move('s')
+        if(bossShip.posY < 4):
+            self.bossMoveUp = False
+        elif(bossShip.posY > 20):
+            self.bossMoveUp = True
+        if(self.bossMoveCounter % 25 == 0):
+            bossShip.move('a')
+        self.bossMoveCounter += 1
+        
+        if(bossShip.posX > 3):
+            return False
         else:
-            if random.random() * 10 < 5:
-                bossShip.move('w')
-            else:
-                bossShip.move('s')
+            return True
 
     def fireCannon(self):
         self.attacks.append(self.player.attack())
-
+    
+    def fireRocket(self):
+        self.attacks.append(self.player.rocketAttack())
+    def fireLaser(self):
+        self.attacks.append(self.player.laserAttack())
     def enemiesDefeated(self):
         if(len(self.enemyShips) == 0):
             return True
@@ -136,7 +149,7 @@ class Round:
                                     self.attacks.remove(a)
                                     self.player.score += 20
 
-                            if(e.posX == a.posX and e.posY == a.posY): #if it hits, remove the ship and attack from respective arrays
+                            elif(e.posX == a.posX and e.posY == a.posY): #if it hits, remove the ship and attack from respective arrays
                                 e.health -= 1
                                 if(e.health == 0):
                                     self.enemyShips.remove(e)
@@ -148,7 +161,7 @@ class Round:
     
     def enemyMove(self):
         for e in self.enemyShips:
-            if(random.random() * e.speed > 0.9):
+            if(random.randrange(10) <= e.speed):
                 if(e.posX > 2):
                     e.move("a")
                 else: 
@@ -179,17 +192,35 @@ class Round:
 
     
     def start(self, window):
+        # star positions
+        for i in range(10):
+            color = 6
+            if random.random() < 0.2: color = 7
+            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '*',color))
+        for i in range(15):
+            color = 6
+            if random.random() < 0.2: color = 7
+            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '.', color))
+        for i in range(10):
+            color = 6
+            if random.random() < 0.2: color = 7
+            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '\u2727', color))
+
         curses.noecho()
         curses.cbreak()
         window.nodelay(True)
         window.keypad(True)
-        printMap(self,window)
+        printMap(self,window,self.stars)
         window.box()
         window.refresh()
+        lasers, rockets = 5, 5
+        # 4 is the 1 armor at start of round
+        if 4 in self.player.itemsUnlocked:
+            self.player.armor = min(self.player.health, self.player.armor + 1)
         playerHit = False
         ret = 0
         while(ret == 0):
-            printMap(self,window)
+            printMap(self,window,self.stars)
             window.refresh()
             try:
                 userInput = window.getkey()
@@ -199,11 +230,19 @@ class Round:
                     self.player.move(userInput)
                 if(userInput == ' '):
                     self.fireCannon()
+                # rockets are 5
+                if (userInput == 'j' and 5 in self.player.itemsUnlocked and rockets > 0):
+                    self.fireRocket()
+                    rockets -= 1
+                # laser is 11
+                if (userInput == 'k' and 11 in self.player.itemsUnlocked and lasers > 0):
+                    self.fireLaser()
+                    lasers -= 1
             except curses.error:
                 pass
             window.clear()
             window.box()
-            printMap(self,window)
+            printMap(self,window,self.stars)
             window.refresh()
             self.currentTime = time.time()
             if((self.currentTime - self.lastTime) > 0.05):
@@ -211,7 +250,10 @@ class Round:
                     self.enemyFire()
                 playerHit = self.shotMove()
                 if(playerHit == True):
-                    self.player.health -= 1
+                    if (self.player.armor > 0):
+                        self.player.armor -= 1
+                    else:
+                        self.player.health -= 1
                     if(self.player.health == 0):
                         ret = -1
                 if(self.enemiesDefeated()):
@@ -227,7 +269,7 @@ class Round:
             
             window.clear()
             window.box()
-            printMap(self,window)
+            printMap(self,window,self.stars)
             window.refresh()
         self.enemyShips.clear()
         self.attacks.clear()
@@ -241,19 +283,25 @@ def bossprint(bossShip, std):
         for j in range(-1,2):
             std.addstr(bossShip.posY + i, bossShip.posX + j, bossShip.icon)
 
-def printMap(roundObject,std):
+def printMap(roundObject,std,stars):
     global isBossLevel
+
     for t in roundObject.trash:
         if(t.direction == 'a'):
             std.addstr(int(t.posY),int(t.posX),str(t.head) + "=-")
         if(t.direction == 'd'):
             std.addstr(int(t.posY),int(t.posX), "-=" + str(t.head))
+
+    for s in stars:
+        std.addstr(s[0],s[1],s[2], curses.color_pair(s[3]))
+
     for s in roundObject.enemyShips:
         std.addstr(s.posY,s.posX,s.icon)
         if isBossLevel:
             bossprint(s,std)
     std.addstr(roundObject.player.posY,roundObject.player.posX,">", curses.color_pair(roundObject.player.colorCode))
     for a in roundObject.attacks:
+
         std.addstr(a.posY,a.posX,"~")
     for t in roundObject.trash:
         if(t.direction == 'a'):
@@ -261,6 +309,16 @@ def printMap(roundObject,std):
         if(t.direction == 'd'):
             std.addstr(int(t.posY),int(t.posX), "-=" + str(t.head))
     std.addstr(0,5, " Health:" + "\u2764" * roundObject.player.health +" ", curses.color_pair(2))
+
+        if a.dmg == 3:
+            std.addstr(a.posY,a.posX,"\u2e27", curses.color_pair(1))
+        elif a.dmg == 2:
+            std.addstr(a.posY,a.posX,"-", curses.color_pair(2))
+        else:
+            std.addstr(a.posY,a.posX,"~")
+    std.addstr(0,5, " Health:" + "\u2764" * roundObject.player.armor, curses.color_pair(3))
+    std.addstr(0, (13 + roundObject.player.armor), "\u2764" * (roundObject.player.health - roundObject.player.armor) + " ", curses.color_pair(2)) 
+
     std.addstr(0,26, " Round: " + str(roundObject.roundNumber) + " ", curses.color_pair(3))
     std.addstr(0,46, " Score: " + str(roundObject.player.score) + " ", curses.color_pair(6))
     std.addstr(0,64, " Money: $" + str(roundObject.player.money) + " ", curses.color_pair(4))
