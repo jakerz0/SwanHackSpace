@@ -82,7 +82,11 @@ class Round:
 
     def fireCannon(self):
         self.attacks.append(self.player.attack())
-
+    
+    def fireRocket(self):
+        self.attacks.append(self.player.rocketAttack())
+    def fireLaser(self):
+        self.attacks.append(self.player.laserAttack())
     def enemiesDefeated(self):
         if(len(self.enemyShips) == 0):
             return True
@@ -162,6 +166,10 @@ class Round:
         printMap(self,window)
         window.box()
         window.refresh()
+        lasers, rockets = 5, 5
+        # 4 is the 1 armor at start of round
+        if 4 in self.player.itemsUnlocked:
+            self.player.armor = min(self.player.health, self.player.armor + 1)
         playerHit = False
         ret = 0
         while(ret == 0):
@@ -175,6 +183,14 @@ class Round:
                     self.player.move(userInput)
                 if(userInput == ' '):
                     self.fireCannon()
+                # rockets are 5
+                if (userInput == 'j' and 5 in self.player.itemsUnlocked and rockets > 0):
+                    self.fireRocket()
+                    rockets -= 1
+                # laser is 11
+                if (userInput == 'k' and 11 in self.player.itemsUnlocked and lasers > 0):
+                    self.fireLaser()
+                    lasers -= 1
             except curses.error:
                 pass
             window.clear()
@@ -187,7 +203,10 @@ class Round:
                     self.enemyFire()
                 playerHit = self.shotMove()
                 if(playerHit == True):
-                    self.player.health -= 1
+                    if (self.player.armor > 0):
+                        self.player.armor -= 1
+                    else:
+                        self.player.health -= 1
                     if(self.player.health == 0):
                         ret = -1
                 if(self.enemiesDefeated()):
@@ -222,8 +241,14 @@ def printMap(roundObject,std):
             bossprint(s,std)
     std.addstr(roundObject.player.posY,roundObject.player.posX,">", curses.color_pair(roundObject.player.colorCode))
     for a in roundObject.attacks:
-        std.addstr(a.posY,a.posX,"~")
-    std.addstr(0,5, " Health:" + "\u2764" * roundObject.player.health +" ", curses.color_pair(2))
+        if a.dmg == 3:
+            std.addstr(a.posY,a.posX,"\u2e27", curses.color_pair(1))
+        elif a.dmg == 2:
+            std.addstr(a.posY,a.posX,"-", curses.color_pair(2))
+        else:
+            std.addstr(a.posY,a.posX,"~")
+    std.addstr(0,5, " Health:" + "\u2764" * roundObject.player.armor, curses.color_pair(3))
+    std.addstr(0, (13 + roundObject.player.armor), "\u2764" * (roundObject.player.health - roundObject.player.armor) + " ", curses.color_pair(2)) 
     std.addstr(0,26, " Round: " + str(roundObject.roundNumber) + " ", curses.color_pair(3))
     std.addstr(0,46, " Score: " + str(roundObject.player.score) + " ", curses.color_pair(6))
     std.addstr(0,64, " Money: $" + str(roundObject.player.money) + " ", curses.color_pair(4))
