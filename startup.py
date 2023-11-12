@@ -8,7 +8,7 @@ def startup(window):
     # window.addstr(2, 4, str(curses.has_extended_color_support()))
     
     window.addstr(3, 6, '[g] Start Game')
-    window.addstr(4, 6, '[h] High Score: ' + highscore[1].strip() + ' -- ' + highscore[0].strip())
+    window.addstr(4, 6, '[h] High Score: ' + highscore[1].strip() + ' [' + highscore[0].strip() + ']')
     window.addstr(5, 6, '[q] Quit')
     # from patorjk.com
     window.addstr(8,1,' _____                     _    _ _             ')
