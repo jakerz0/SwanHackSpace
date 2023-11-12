@@ -1,7 +1,7 @@
 import curses
 import random
 from curses import textpad
-from match import playerShip
+#from game import playerShip
 class Frame:
     screen = 0
     inbetweenBox = 0
@@ -15,8 +15,7 @@ class Frame:
         self.screen = stdscr
         self.inbetweenBox = curses.newwin(maxY, maxX)
 
-    def printScreen(self):
-        global playerShip
+    def printScreen(self, playerShip):
         self.screen.border(0)
         self.inbetweenBox.box()
         self.healBox = self.inbetweenBox.subwin(11, 39, 1, 1)
@@ -38,7 +37,7 @@ class Frame:
         self.inbetweenBox.addstr(1, 1, str(playerShip.isPlayer))
         self.inbetweenBox.refresh()
     
-    def makeSelection(self):
+    def makeSelection(self, playerShip):
         choice = ''
         while choice != 'h' and choice != 's' and choice != 'u' and choice != 'c':
             choice = self.inbetweenBox.getkey()
@@ -57,8 +56,8 @@ class Frame:
                     return 'heal'
                 else:
                     self.healBox.clear()
-                    self.printScreen()
-                    self.makeSelection()
+                    self.printScreen(playerShip)
+                    self.makeSelection(playerShip)
             case 's':
                 self.shopBox.clear()
                 self.shopBox.box()
@@ -72,8 +71,8 @@ class Frame:
                     return 'shop'
                 else:
                     self.shopBox.clear()
-                    self.printScreen()
-                    self.makeSelection()
+                    self.printScreen(playerShip)
+                    self.makeSelection(playerShip)
             case 'u':
                 self.upgBox.clear()
                 self.upgBox.box()
@@ -86,8 +85,8 @@ class Frame:
                     return 'upgrade'
                 else:
                     self.upgBox.clear()
-                    self.printScreen()
-                    self.makeSelection()
+                    self.printScreen(playerShip)
+                    self.makeSelection(playerShip)
             case 'c':
                 self.conBox.clear()
                 self.conBox.box()
@@ -101,8 +100,8 @@ class Frame:
                     return 'configure'
                 else:
                     self.conBox.clear()
-                    self.printScreen()
-                    self.makeSelection()
+                    self.printScreen(playerShip)
+                    self.makeSelection(playerShip)
         self.inbetweenBox.refresh()
         self.inbetweenBox.getch()
         
