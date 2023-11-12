@@ -15,24 +15,56 @@ class Frame:
         self.inbetweenBox = curses.newwin(maxY, maxX)
 
     def printScreen(self, playerShip):
-        self.screen.border(0)
+        self.inbetweenBox.clear()
         self.inbetweenBox.box()
         self.healBox = self.inbetweenBox.subwin(11, 39, 1, 1)
         self.healBox.box()
+        self.healBox.addstr(1, 1 , "        _____             _____")
+        self.healBox.addstr(2, 1,  "     /  ____  \\       /  ____  \\")
+        self.healBox.addstr(3, 3,    "  /  |         \\ /          | \\")
+        self.healBox.addstr(4, 6,        "|  |                    | |")
+        self.healBox.addstr(5, 6,          " |  |               |  |")
+        self.healBox.addstr(6, 8,            " |  |           |  |")
+        self.healBox.addstr(7, 10,             " |  |       |  |")
+        self.healBox.addstr(8, 12,               " |  |   |  |")
+        self.healBox.addstr(9, 15,                 "|  |  |")
+
         self.healBox.addstr(5, 17, "Heal")
         self.healBox.addstr(6, 17, "[H]")
         self.shopBox = self.inbetweenBox.subwin(11, 39, 12, 1)
         self.shopBox.box()
-        self.shopBox.addstr(5, 17, "Shop")
-        self.shopBox.addstr(6, 17, "[S]")
+        # from patorjk.com
+        self.shopBox.addstr(1, 3, " _____ _")                
+        self.shopBox.addstr(2, 3, "/  ___| |")                
+        self.shopBox.addstr(3, 3, "\ `--.| |__   ___  _ __")
+        self.shopBox.addstr(4, 3, " `--. \ '_ \ / _ \| '_ \ ")
+        self.shopBox.addstr(5, 3, "/\__/ / | | | (_) | |_) |")
+        self.shopBox.addstr(6, 3, "\____/|_| |_|\___/| .__/")
+        self.shopBox.addstr(7, 3, "                | |    ")
+        self.shopBox.addstr(8, 3, "                |_|    ")
+        self.shopBox.addstr(8, 23, "[S]")
         self.upgBox = self.inbetweenBox.subwin(11, 39, 1, 40)
         self.upgBox.box()
-        self.upgBox.addstr(5, 17, "Upgrade")
-        self.upgBox.addstr(6, 19, "[U]")
+        # from FBG
+        self.upgBox.addstr(3, 11, ".-------..___")
+        self.upgBox.addstr(4, 11, "'-._     :_.-'")
+        self.upgBox.addstr(5, 11, ".- ) _ ( --.")
+        self.upgBox.addstr(6, 11, ":  '-' '-'  ;.")
+        self.upgBox.addstr(7, 11, "/'-.._____.-' |")
+        self.upgBox.addstr(8, 11, "|   |     \   |")
+        self.upgBox.addstr(9, 11, "\   |     /   \\")
+        self.upgBox.addstr(2, 13, "Upgrade [U]")
         self.conBox = self.inbetweenBox.subwin(11, 39, 12, 40)
         self.conBox.box()
-        self.conBox.addstr(5, 16, "Configure")
-        self.conBox.addstr(6, 19, "[C]")
+        self.conBox.addstr(2, 11, "⠀⠀⠀⢀⣴⣾⣦⣀⣀⣠⣿⣿⣷⠀⠀⠀⠀")
+        self.conBox.addstr(3, 11, "⠀⠀⠀⠈⢻⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀")
+        self.conBox.addstr(4, 11, "⠀⠀⠀⢀⣾⣿⡿⠋⠁⠈⠙⢿⣿⣷⣶⣶⡆")
+        self.conBox.addstr(5, 11, "⠀⢸⣿⣿⣿⣿⡇⠀⠀⠀⠀⢸⣿⣿⣿⣿⡇⠀")
+        self.conBox.addstr(6, 11, "⠀⠘⠛⠛⠻⣿⣷⣤⣀⣀⣴⣿⣿⠏⠀⠀⠀⠀")
+        self.conBox.addstr(7, 11, "⠀⠀⠀⠀⠀⣾⣿⣿⡿⠿⢿⣿⣿⣷⣿")
+        self.conBox.addstr(8, 11, "⠀⠀⠀⠀⠸⠿⣿⡿⠀⠀⠀⠻⠿⠋")
+        self.conBox.addstr(1, 15, "Configure")
+        self.conBox.addstr(5, 18, "[C]")
         self.inbetweenBox.refresh()
     
     def makeSelection(self, playerShip):
@@ -114,6 +146,36 @@ class Frame:
                 while choice != 'y' and choice != 'n':
                     choice = self.conBox.getkey()
                 if (choice == 'y'):
+                    self.inbetweenBox.clear()
+                    self.inbetweenBox.box()
+                    self.inbetweenBox.addstr(1, 1, "What skin would you like to equip?")
+                    skinList = ['Blue Ship Skin', 'Pink Ship Skin', 'Green Ship Skin', 'Red Ship Skin']
+                    skinNumList = [7, 8, 9, 10]
+                    skinString = ''
+                    iter = 1
+                    for option in playerShip.itemsUnlocked:
+                        if option == 7 or option == 8 or option == 9 or option == 10:
+                            skinString += '[' + str(iter) + '] ' + skinList[option - 7]
+                            skinString += ' '
+                            iter += 1
+                    self.inbetweenBox.addstr(2, 1, skinString)
+                    self.inbetweenBox.addstr(3, 1, "[Esc]")
+                    while choice != 49 and choice != 50 and choice != 51 and choice != 52 and choice != 27:
+                        choice = self.inbetweenBox.getch()
+                    if choice == 27:
+                        return '0'
+                    choice = choice - 49
+                    skinDict = {7: 1, 8: 4, 9: 3, 10: 5}
+                    match choice:
+                        case 0:
+                            playerShip.colorCode = skinDict[skinNumList[0]]
+                        case 1:
+                            playerShip.colorCode = skinDict[skinNumList[1]]
+                        case 2:
+                            playerShip.colorCode = skinDict[skinNumList[2]]
+                        case 3:
+                            playerShip.colorCode = skinDict[skinNumList[3]]
+                            
                     return 'configure'
                 else:
                     self.conBox.clear()

@@ -6,6 +6,7 @@ class Ship():
     health: int
     maxHealth: int
     armor: int
+    colorCode: int
     speed: int
     money: int
     barriers: int
@@ -20,6 +21,7 @@ class Ship():
         self.health = 3
         self.maxHealth = 3
         self.armor = 0
+        self.colorCode = 0
         self.speed = 1
         self.money = 5
         self.barriers = 1

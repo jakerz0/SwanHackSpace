@@ -69,6 +69,8 @@ class Round:
                     self.player.move(userInput)
                 if(userInput == 's'):
                     self.player.move(userInput)
+                if (userInput == 'o'):
+                    return 1
             except curses.error:
                 pass
             window.clear()

@@ -34,8 +34,10 @@ class Match():
 
 
             # in between screen
-            self.f.printScreen(self.player)
-            self.f.makeSelection(self.player)
+            output = '0'
+            while output == '0':
+                self.f.printScreen(self.player)
+                output = self.f.makeSelection(self.player)
         
         self.gameOverScreen()
         
