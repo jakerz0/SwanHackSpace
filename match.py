@@ -35,9 +35,12 @@ class Match():
 
 
             # in between screen
-            self.f.printScreen(self.player)
-            self.f.makeSelection(self.player)
-            roundnumber += 1
+
+            output = '0'
+            while output == '0':
+                self.f.printScreen(self.player)
+                output = self.f.makeSelection(self.player)
+
         
         self.gameOverScreen()
         
