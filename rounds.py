@@ -7,16 +7,17 @@ import random
 class Round:
     enemyShips = []
     player: Ship
-    def __init__ (self,roundNumber,player):
-        self.roundNumber = roundNumber
-        self.player = player
     attacks = []
     player = 0
     lastTime = 0
     currentTime = 0
-    def __init__ (self,roundNumber):
+    
+    def __init__ (self,roundNumber,player):
         self.roundNumber = roundNumber
+        self.player = player
         self.lastTime = time.time()
+
+        
 
     def generateEnemies(self):
         self.enemyShips.append(Ship(4,77, False))
