@@ -102,30 +102,45 @@ class Round:
                 if(a.posX == 1):
                     self.attacks.remove(a)
                 else:
-                    a.move('a')
-                    playerHit = a.collideCheck(self.player.posX,self.player.posY)
-                    if(playerHit):
-                        return True
+                    didCollide = False
+                    for a1 in self.attacks:
+                        if(a.posX-1 == a1.posX and a.posY == a1.posY):
+                            self.attacks.remove(a)
+                            self.attacks.remove(a1)
+                            didCollide = True
+                    if(didCollide == False):
+                        a.move('a')
+                        playerHit = a.collideCheck(self.player.posX,self.player.posY)
+                        if(playerHit):
+                            return True
             else: #for when the player fires
                 if(a.posX == 79):
                     self.attacks.remove(a)
                 else:
-                    a.move('d')
-                    for e in self.enemyShips:
-                        if(isBossLevel):
-                            if e.posX - 1 == a.posX and (e.posY - 1 == a.posY or e.posY + 1 == a.posY or e.posY == a.posY):
+                    didCollide1 = False
+                    for a1 in self.attacks:
+                        if(a.posX+1 == a1.posX and a.posY == a1.posY):
+                            self.attacks.remove(a)
+                            self.attacks.remove(a1)
+                            didCollide1 = True
+                    if(didCollide1 == False):
+                        a.move('d')
+                        for e in self.enemyShips:
+                            if(isBossLevel):
+                                if e.posX - 1 == a.posX and (e.posY - 1 == a.posY or e.posY + 1 == a.posY or e.posY == a.posY):
+                                    e.health -= 1
+                                    if(e.health == 0):
+                                        self.enemyShips.remove(e)
+                                    self.attacks.remove(a)
+                                    self.player.score += e.damage
+
+                            if(e.posX == a.posX and e.posY == a.posY): #if it hits, remove the ship and attack from respective arrays
                                 e.health -= 1
                                 if(e.health == 0):
                                     self.enemyShips.remove(e)
                                 self.attacks.remove(a)
-                                self.player.score += e.damage
-
-                        if(e.posX == a.posX and e.posY == a.posY): #if it hits, remove the ship and attack from respective arrays
-                            e.health -= 1
-                            if(e.health == 0):
-                                self.enemyShips.remove(e)
-                            self.attacks.remove(a)
-                            self.player.score += 1
+                                self.player.score += 1
+        
                         
         return False
     
@@ -183,10 +198,12 @@ class Round:
                     ret = -1
                 self.lastTime = time.time()
 
+            
             window.clear()
             window.box()
             printMap(self,window)
             window.refresh()
+        self.attacks.clear()
         return ret
     
 
