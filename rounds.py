@@ -203,6 +203,7 @@ class Round:
             window.box()
             printMap(self,window)
             window.refresh()
+        self.enemyShips.clear()
         self.attacks.clear()
         return ret
     
