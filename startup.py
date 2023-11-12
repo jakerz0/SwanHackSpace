@@ -8,7 +8,7 @@ def startup(window):
     
     window.addstr(3, 6, '[s] Start Game')
     window.addstr(4, 6, '[h] High Score: ' + highscore[1].strip() + ' -- ' + highscore[0].strip())
-    window.addstr(5, 6, '[i] inbetween')
+    window.addstr(5, 6, '[q] Quit')
 
     window.addstr(8,1,' _____                     _    _ _             ')
     window.addstr(9,1,'/  ___|                   | |  | (_)            ')
@@ -27,7 +27,7 @@ def startup(window):
 
     while(True):
         ret = window.getkey()
-        if(ret == 'i' or ret == 'h' or ret == 's'):
+        if(ret == 'q' or ret == 'h' or ret == 's'):
             break
     
     

@@ -1,4 +1,5 @@
-
+import curses
+import time
 class Shot():
     dmg:int
     posX:int
@@ -11,17 +12,21 @@ class Shot():
         self.posX = x
         self.posY = y
     
-    def collide(self, target):
-        target.health -= self.dmg
+
+    def collideCheck(self, playerX, playerY):
+        if(playerX == self.posX and playerY == self.posY):
+            return True
+        else:
+            return False
 
     def move(self, dir:str):
-        if(dir == 'n'):
-            self.posY += 1 * self.speed
-        elif(dir == 's'):
+        if(dir == 'w'):
             self.posY -= 1 * self.speed
-        elif(dir == 'w'):
+        elif(dir == 's'):
+            self.posY += 1 * self.speed
+        elif(dir == 'a'):
             self.posX -= 1 * self.speed
-        elif(dir == 'e'):
+        elif(dir == 'd'):
             self.posX += 1 * self.speed
 
         return (self.posX, self.posY)

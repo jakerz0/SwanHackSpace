@@ -2,8 +2,9 @@ import curses
 from ship import Ship
 from attack import Attack
 from startup import startup
-from inbetween import Frame
+# from inbetween import Frame
 from rounds import Round
+from match import Match
 
 def parsescore(f: list):
     ret: str
@@ -13,7 +14,8 @@ def parsescore(f: list):
     return ret
 
 def main():
-
+    playerShip = Ship(11, 2, True)
+    
     curses.initscr()
     stdscr = curses.newwin(24, 80)
     curses.noecho()
@@ -21,19 +23,18 @@ def main():
     stdscr.keypad(True)
     stdscr.box()
 
-    choice = startup(stdscr)
+    while(True):
+        choice = startup(stdscr)
 
-    
-    match choice:
-        case 'i':
-            f = Frame(stdscr)
-            f.printScreen()
-            f.makeSelection()
-        case 's':
-            Round()
+        
+        match choice:
+            case 's':
+                m = Match(stdscr, playerShip)
+                m.run()
+            case 'q':
+                break
 
     stdscr.refresh()
-    stdscr.getkey()
     curses.endwin()
 
 
