@@ -26,7 +26,7 @@ class Match():
             r = Round(1, self.player)
             r.generateRound()
             result = r.start(self.window)
-            if result[0] == -1:
+            if result == -1:
                 self.lost = True
                 break
             

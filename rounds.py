@@ -28,40 +28,12 @@ class Round:
         self.enemyShips.append(Ship(14,77, False))
         self.enemyShips.append(Ship(16,77, False))
         self.enemyShips.append(Ship(18,77, False))
-    
-    def generatePlayer(self):
-        self.player = Ship(11,2)
 
     def generateRound(self):
         self.generateEnemies()
         #self.generatePlayer()
 
-    def start(self, window):
-        printMap(self,window)
-        window.box()
-        window.refresh()
-        while(True):
-            printMap(self,window)
-            window.refresh()
-            userInput = window.getkey()
-            if(userInput == 'w'):
-                self.player.move(userInput)
-            if(userInput == 's'):
-                self.player.move(userInput)
-            if(userInput == 'p'):
-                ret = [-1]
-                break
-            if(userInput == 'o'):
-                ret = [0]
-                break
 
-            window.clear()
-            window.box()
-            printMap(self,window)
-            window.refresh()
-            time.sleep(0.2)
-        return ret
-    
     def enemyFire(self):
         for s in self.enemyShips:
             if(random.random() < 0.05):
@@ -77,8 +49,47 @@ class Round:
                 if(playerHit):
                     return True
         return False
+    
+    def start(self, window):
+        curses.noecho()
+        curses.cbreak()
+        window.nodelay(True)
+        window.keypad(True)
+        printMap(self,window)
+        window.box()
+        window.refresh()
+        playerHit = False
+        ret = 0
+        while(playerHit == False):
+            printMap(self,window)
+            window.refresh()
+            try:
+                userInput = window.getkey()
+                if(userInput == 'w'):
+                    self.player.move(userInput)
+                if(userInput == 's'):
+                    self.player.move(userInput)
+            except curses.error:
+                pass
+            window.clear()
+            window.box()
+            printMap(self,window)
+            window.refresh()
+            self.currentTime = time.time()
+            if((self.currentTime - self.lastTime) > 0.05):
+                if(random.random() < 0.5):
+                    self.enemyFire()
+                playerHit = self.enemyShotMove()
+                if(playerHit == True):
+                    ret = -1
+                self.lastTime = time.time()
 
-
+            window.clear()
+            window.box()
+            printMap(self,window)
+            window.refresh()
+        return ret
+    
 
 
 
@@ -90,53 +101,3 @@ def printMap(roundObject,std):
         std.addstr(a.posY,a.posX,"~")
 
 
-def main():
-    curses.initscr()
-    stdscr = curses.newwin(24, 80)
-    curses.noecho()
-    curses.cbreak()
-    stdscr.nodelay(True)
-    stdscr.keypad(True)
-    stdscr.box()
-    r = Round(1)
-    r.generateRound()
-    playerHit = False
-    printMap(r,stdscr)
-
-    stdscr.refresh()
-    while(playerHit == False):
-        printMap(r,stdscr)
-        stdscr.refresh()
-        
-        try:
-            userInput = stdscr.getkey()
-            if(userInput == 'w'):
-                r.player.move(userInput)
-            if(userInput == 's'):
-                r.player.move(userInput)
-        except curses.error:
-            pass
-        stdscr.clear()
-        stdscr.box()
-        printMap(r,stdscr)
-        stdscr.refresh()
-        r.currentTime = time.time()
-        if((r.currentTime - r.lastTime) > 0.05):
-            if(random.random() < 0.5):
-                r.enemyFire()
-            playerHit = r.enemyShotMove()
-            r.lastTime = time.time()
-
- 
-
-    stdscr.addstr(5,5,"play again")
-    stdscr.refresh()
-    time.sleep(5)
-        
-
-    curses.endwin()
-
-
-
-if __name__ == '__main__':
-    main()
