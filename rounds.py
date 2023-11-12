@@ -29,9 +29,27 @@ class Round:
         self.enemyShips.append(Ship(16,77, False))
         self.enemyShips.append(Ship(18,77, False))
 
+
     def generateRound(self):
-        self.generateEnemies()
+        #self.generateEnemies()
         #self.generatePlayer()
+        fname = './levels/level' + str(self.roundNumber) + '.txt'
+        src = open(fname, 'r')
+        tmp = src.readlines()
+        enemies = []
+        for e in tmp:
+            enemies.append(e.split(' '))
+            
+        
+        for i in range(len(enemies)):
+            print(enemies[i])
+            if i == 0: continue # first thing in enemies is dummy notation, ignore
+            self.enemyShips.append(Ship(int(enemies[i][1]), int(enemies[i][0]),
+                                        False, int(enemies[i][3]), int(enemies[i][2]),
+                                        enemies[i][5].strip(), int(enemies[i][4]))
+                                    ) # y, x, player?, speed, health, icon, dmg
+            
+        
 
 
     def enemyFire(self):
