@@ -170,11 +170,17 @@ class Round:
     def start(self, window):
         # star positions
         for i in range(10):
-            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '*'))
+            color = 6
+            if random.random() < 0.2: color = 7
+            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '*',color))
         for i in range(15):
-            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '.'))
+            color = 6
+            if random.random() < 0.2: color = 7
+            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '.', color))
         for i in range(10):
-            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '\u2727'))
+            color = 6
+            if random.random() < 0.2: color = 7
+            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '\u2727', color))
 
         curses.noecho()
         curses.cbreak()
@@ -253,7 +259,7 @@ def bossprint(bossShip, std):
 def printMap(roundObject,std,stars):
     global isBossLevel
     for s in stars:
-        std.addstr(s[0],s[1],s[2])
+        std.addstr(s[0],s[1],s[2], curses.color_pair(s[3]))
     for s in roundObject.enemyShips:
         std.addstr(s.posY,s.posX,s.icon)
         if isBossLevel:

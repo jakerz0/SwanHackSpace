@@ -23,15 +23,22 @@ def doLoading(window):
     window.clear()
     window.box()
     for i in range(10):
-        window.addstr(random.randrange(22)+1, random.randrange(78)+1, '*')
+        color = 6
+        if random.random() < 0.2: color = 7
+        window.addstr(random.randrange(22)+1, random.randrange(78)+1, '*', curses.color_pair(color))
     for i in range(15):
-        window.addstr(random.randrange(22)+1, random.randrange(78)+1, '.')
+        color = 6
+        if random.random() < 0.2: color = 7
+        window.addstr(random.randrange(22)+1, random.randrange(78)+1, '.', curses.color_pair(color))
     for i in range(10):
-        window.addstr(random.randrange(22)+1, random.randrange(78)+1, '\u2727')
+        color = 6
+        if random.random() < 0.2: color = 7
+        window.addstr(random.randrange(22)+1, random.randrange(78)+1, '\u2727', curses.color_pair(color))
     window.addstr(8, 5, "Aliens are attacking! Destroy them before they get you! (⋋_⋌)")
     window.addstr(10, 33, '[ Controls ] ')
     window.addstr(11, 22, 'w: move up')
     window.addstr(12, 22, 's: move down')
     window.addstr(13, 22, 'SPACE: shoot cannon')
+    window.addstr(14, 22, 'b: raise shield')
     window.addstr(18, 33, 'Loading ')
     percentage(window)

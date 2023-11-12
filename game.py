@@ -15,7 +15,7 @@ def parsescore(f: list):
     return ret
 
 def main():
-    playerShip = Ship(11, 2, True)
+    
     
     curses.initscr()
     stdscr = curses.newwin(24, 80)
@@ -29,12 +29,13 @@ def main():
     curses.init_pair(4, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(5, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(6, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+    curses.init_pair(7, curses.COLOR_CYAN, curses.COLOR_BLACK)
     stdscr.keypad(True)
     stdscr.box()
 
     while(True):
         choice = startup(stdscr)
-
+        playerShip = Ship(11, 2, True)
         
         match choice:
             case 'g':
