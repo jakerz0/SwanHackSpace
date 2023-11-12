@@ -24,6 +24,7 @@ class Match():
     def run(self):
         self.window.clear()
         roundnumber = 1
+        self.lost = True
         while not self.lost:
             r = Round(roundnumber, self.player)
             r.generateRound()
@@ -42,17 +43,38 @@ class Match():
                 output = self.f.makeSelection(self.player)
 
         
-        self.gameOverScreen()
+        self.gameOverScreen(self.lost)
         
 
 
-    def gameOverScreen(self):
+    def gameOverScreen(self, lost):
         self.window.nodelay(False)
         self.window.clear()
         self.window.box()
-        self.window.addstr(1,1, "Game Over - you lost :(")
-        self.window.addstr(3,1, "HIGH SCORE: " + str(-1))
-        self.window.addstr(4,1, "YOUR SCORE: " + str(0))
+        f = open('highscore.txt', 'r')
+        highscore= f.readlines()
+        if not lost:
+            self.window.addstr(1,1, "Game Over - you lost :(")
+        else:
+            self.window.addstr(1,1, "Game Over - you won!!")
+        self.window.addstr(3,1, "HIGH SCORE: " + highscore[1] + " [" + highscore[0].strip() + "]")
+        self.window.addstr(4,1, "YOUR SCORE: " + str(self.player.score))
+        if int(highscore[1]) < self.player.score or True:
+            self.window.addstr(6,1, "New high score, please enter your name: ")
+            self.window.move(6, 42)
+            inkey = ''
+            newName = ''
+            inc = 0
+            while(inc < 3):
+                inkey = self.window.getch()
+                newName += str(chr(inkey))
+                self.window.addstr(6,42, newName)
+                inc += 1
+            
+            f.close()
+            f = open("highscore.txt", 'w')
+            f.write(newName.strip() + '\n')
+            f.write(str(self.player.score))
         self.window.refresh()
         self.window.getch()
         self.window.clear()
