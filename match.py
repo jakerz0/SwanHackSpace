@@ -23,8 +23,9 @@ class Match():
 
     def run(self):
         self.window.clear()
+        roundnumber = 1
         while not self.lost:
-            r = Round(1, self.player)
+            r = Round(6, self.player)
             r.generateRound()
             result = r.start(self.window)
             if result == -1:
@@ -34,10 +35,12 @@ class Match():
 
 
             # in between screen
+
             output = '0'
             while output == '0':
                 self.f.printScreen(self.player)
                 output = self.f.makeSelection(self.player)
+
         
         self.gameOverScreen()
         

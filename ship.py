@@ -9,6 +9,7 @@ class Ship():
     colorCode: int
     speed: int
     money: int
+    score: int
     barriers: int
     posX: int
     posY: int
@@ -16,22 +17,24 @@ class Ship():
     attackIdx:int
     isPlayer: bool
     itemsUnlocked: list
+    icon: str
 
-    def __init__(self, y, x, p):
-        self.health = 3
-        self.maxHealth = 3
+    def __init__(self, y, x, p, spd=1, health=3, icon='<', dmg=1):
+        self.health = health
+        self.maxHealth = health
         self.armor = 0
-        self.colorCode = 0
-        self.speed = 1
+        self.speed = spd
         self.money = 5
+        self.score = 0
         self.barriers = 1
         self.posX = x
         self.posY = y
         self.attackIdx = 0
         self.attackprotos = []
-        self.attackprotos.append(Attack(1,1)) # basic attack
+        self.attackprotos.append(Attack(dmg,1)) # basic attack
         self.isPlayer = p
         self.itemsUnlocked = []
+        self.icon = icon
 
     def move(self, dir):
         if(dir == 'w'):
@@ -50,7 +53,7 @@ class Ship():
         return (self.posX, self.posY)
     
     def attack(self):
-        return Shot(self.attackprotos[self.attackIdx], self.posX, self.posY)
+        return Shot(self.attackprotos[self.attackIdx], self.posX, self.posY, self.isPlayer)
     
     def isDead(self):
         if(self.health <= 0):
