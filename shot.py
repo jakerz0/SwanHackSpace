@@ -5,12 +5,14 @@ class Shot():
     posX:int
     posY:int
     speed:int
+    isPlayer: bool
 
-    def __init__(self, attack, x, y):
+    def __init__(self, attack, x, y, isPlayer):
         self.dmg = attack.dmg
         self.speed = attack.spd
         self.posX = x
         self.posY = y
+        self.isPlayer = isPlayer
     
 
     def collideCheck(self, playerX, playerY):
