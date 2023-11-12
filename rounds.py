@@ -220,11 +220,11 @@ def printMap(roundObject,std):
         std.addstr(s.posY,s.posX,s.icon)
         if isBossLevel:
             bossprint(s,std)
-    std.addstr(roundObject.player.posY,roundObject.player.posX,">")
+    std.addstr(roundObject.player.posY,roundObject.player.posX,">", curses.color_pair(roundObject.player.colorCode))
     for a in roundObject.attacks:
         std.addstr(a.posY,a.posX,"~")
-    std.addstr(0,10, " Health: " + "<3 " * roundObject.player.health)
-    std.addstr(0,40, " Round: " + str(roundObject.roundNumber) + " ")
-    std.addstr(0,55, " Score: " + str(roundObject.player.score) + " ")
+    std.addstr(0,10, " Health:" + "\u2764" * roundObject.player.health +" ", curses.color_pair(2))
+    std.addstr(0,25, " Round: " + str(roundObject.roundNumber) + " ", curses.color_pair(3))
+    std.addstr(0,40, " Score: " + str(roundObject.player.score) + " ", curses.color_pair(6))
 
 

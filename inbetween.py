@@ -147,14 +147,15 @@ class Frame:
                     self.inbetweenBox.box()
                     self.inbetweenBox.addstr(1, 1, "What skin would you like to equip?")
                     skinList = ['Blue Ship Skin', 'Pink Ship Skin', 'Green Ship Skin', 'Red Ship Skin']
-                    skinNumList = [7, 8, 9, 10]
                     skinString = ''
                     iter = 1
+                    optionList = []
                     for option in playerShip.itemsUnlocked:
                         if option == 7 or option == 8 or option == 9 or option == 10:
                             skinString += '[' + str(iter) + '] ' + skinList[option - 7]
                             skinString += ' '
                             iter += 1
+                            optionList.append(option)
                     self.inbetweenBox.addstr(2, 1, skinString)
                     self.inbetweenBox.addstr(3, 1, "[Esc]")
                     while choice != 49 and choice != 50 and choice != 51 and choice != 52 and choice != 27:
@@ -162,18 +163,18 @@ class Frame:
                     if choice == 27:
                         return '0'
                     choice = choice - 49
-                    skinDict = {7: 1, 8: 4, 9: 3, 10: 5}
+                    skinDict = {7: 3, 8: 1, 9: 4, 10: 2}
                     match choice:
                         case 0:
-                            playerShip.colorCode = skinDict[skinNumList[0]]
+                            playerShip.colorCode = skinDict[optionList[0]]
                         case 1:
-                            playerShip.colorCode = skinDict[skinNumList[1]]
+                            playerShip.colorCode = skinDict[optionList[1]]
                         case 2:
-                            playerShip.colorCode = skinDict[skinNumList[2]]
+                            playerShip.colorCode = skinDict[optionList[2]]
                         case 3:
-                            playerShip.colorCode = skinDict[skinNumList[3]]
+                            playerShip.colorCode = skinDict[optionList[3]]
                             
-                    return 'configure'
+                    return '0'
                 else:
                     self.conBox.clear()
                     return '0'
