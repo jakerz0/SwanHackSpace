@@ -118,7 +118,7 @@ class Round:
                                 if(e.health == 0):
                                     self.enemyShips.remove(e)
                                 self.attacks.remove(a)
-                                self.player.score += 1
+                                self.player.score += e.damage
 
                         if(e.posX == a.posX and e.posY == a.posY): #if it hits, remove the ship and attack from respective arrays
                             e.health -= 1
@@ -205,8 +205,8 @@ def printMap(roundObject,std):
     std.addstr(roundObject.player.posY,roundObject.player.posX,">")
     for a in roundObject.attacks:
         std.addstr(a.posY,a.posX,"~")
-    std.addstr(0,10, " Health: " + str(roundObject.player.health) +" ")
-    std.addstr(0,25, " Round: " + str(roundObject.roundNumber) + " ")
-    std.addstr(0,40, " Score: " + str(roundObject.player.score) + " ")
+    std.addstr(0,10, " Health: " + "<3 " * roundObject.player.health)
+    std.addstr(0,40, " Round: " + str(roundObject.roundNumber) + " ")
+    std.addstr(0,55, " Score: " + str(roundObject.player.score) + " ")
 
 
