@@ -26,6 +26,8 @@ def startup(window):
     window.addstr(20,1, "./ /___\ |_/ / /^\ \/ /^\ \ ")
     window.addstr(21,1, "\_____/ \___/\/   \/\/   \/")
 
+    window.box()
+
     ret = 0
     while(True):
         try:

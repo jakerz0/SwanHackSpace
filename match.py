@@ -24,7 +24,7 @@ class Match():
 
     def run(self):
         self.window.clear()
-        roundnumber = 1
+        roundnumber = 6
         while not self.lost:
             r = Round(roundnumber, self.player)
             r.generateRound()
@@ -54,7 +54,7 @@ class Match():
         self.window.box()
         f = open('highscore.txt', 'r')
         highscore= f.readlines()
-        if not lost:
+        if lost:
             self.window.addstr(1,1, "Game Over - you lost :(")
         else:
             self.window.addstr(1,1, "Game Over - you won!!")

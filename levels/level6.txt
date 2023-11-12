@@ -1,2 +1,2 @@
 * x, y, health, speed, dmg, icon
-65 10 20 3 5 M
+65 10 10 3 5 M

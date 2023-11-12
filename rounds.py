@@ -61,7 +61,8 @@ class Round:
                                             enemies[i][5].strip(), int(enemies[i][4]))
                                         ) # y, x, player?, speed, health, icon, dmg
             
-    
+    bossMoveCounter = 0
+    bossMoveUp = True
     def bossMove(self):
         # for e in self.enemyShips:
         #     if(random.random() * e.speed > 0.9):
@@ -70,15 +71,22 @@ class Round:
         #         else: 
         #             return True #return true that it made it to the other end
         bossShip = self.enemyShips[0]
-        if(bossShip.posY < 4):
-            bossShip.move('s')
-        elif(bossShip.posY > 20):
+        if self.bossMoveUp and random.randrange(10) <= bossShip.speed: 
             bossShip.move('w')
+        elif not self.bossMoveUp and random.randrange(10) <= bossShip.speed:
+            bossShip.move('s')
+        if(bossShip.posY < 4):
+            self.bossMoveUp = False
+        elif(bossShip.posY > 20):
+            self.bossMoveUp = True
+        if(self.bossMoveCounter % 25 == 0):
+            bossShip.move('a')
+        self.bossMoveCounter += 1
+        
+        if(bossShip.posX > 3):
+            return False
         else:
-            if random.random() * 10 < 5:
-                bossShip.move('w')
-            else:
-                bossShip.move('s')
+            return True
 
     def fireCannon(self):
         self.attacks.append(self.player.attack())
@@ -134,7 +142,7 @@ class Round:
                                     self.attacks.remove(a)
                                     self.player.score += 20
 
-                            if(e.posX == a.posX and e.posY == a.posY): #if it hits, remove the ship and attack from respective arrays
+                            elif(e.posX == a.posX and e.posY == a.posY): #if it hits, remove the ship and attack from respective arrays
                                 e.health -= 1
                                 if(e.health == 0):
                                     self.enemyShips.remove(e)
@@ -146,7 +154,7 @@ class Round:
     
     def enemyMove(self):
         for e in self.enemyShips:
-            if(random.random() * e.speed > 0.9):
+            if(random.randrange(10) <= e.speed):
                 if(e.posX > 2):
                     e.move("a")
                 else: 
