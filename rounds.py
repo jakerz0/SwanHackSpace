@@ -11,6 +11,7 @@ class Round:
     player = 0
     lastTime = 0
     currentTime = 0
+    stars = []
     global isBossLevel
     
     def __init__ (self,roundNumber,player):
@@ -61,7 +62,8 @@ class Round:
                                             enemies[i][5].strip(), int(enemies[i][4]))
                                         ) # y, x, player?, speed, health, icon, dmg
             
-    
+    bossMoveCounter = 0
+    bossMoveUp = True
     def bossMove(self):
         # for e in self.enemyShips:
         #     if(random.random() * e.speed > 0.9):
@@ -70,15 +72,22 @@ class Round:
         #         else: 
         #             return True #return true that it made it to the other end
         bossShip = self.enemyShips[0]
-        if(bossShip.posY < 4):
-            bossShip.move('s')
-        elif(bossShip.posY > 20):
+        if self.bossMoveUp and random.randrange(10) <= bossShip.speed: 
             bossShip.move('w')
+        elif not self.bossMoveUp and random.randrange(10) <= bossShip.speed:
+            bossShip.move('s')
+        if(bossShip.posY < 4):
+            self.bossMoveUp = False
+        elif(bossShip.posY > 20):
+            self.bossMoveUp = True
+        if(self.bossMoveCounter % 25 == 0):
+            bossShip.move('a')
+        self.bossMoveCounter += 1
+        
+        if(bossShip.posX > 3):
+            return False
         else:
-            if random.random() * 10 < 5:
-                bossShip.move('w')
-            else:
-                bossShip.move('s')
+            return True
 
     def fireCannon(self):
         self.attacks.append(self.player.attack())
@@ -138,7 +147,7 @@ class Round:
                                     self.attacks.remove(a)
                                     self.player.score += 20
 
-                            if(e.posX == a.posX and e.posY == a.posY): #if it hits, remove the ship and attack from respective arrays
+                            elif(e.posX == a.posX and e.posY == a.posY): #if it hits, remove the ship and attack from respective arrays
                                 e.health -= 1
                                 if(e.health == 0):
                                     self.enemyShips.remove(e)
@@ -150,7 +159,7 @@ class Round:
     
     def enemyMove(self):
         for e in self.enemyShips:
-            if(random.random() * e.speed > 0.9):
+            if(random.randrange(10) <= e.speed):
                 if(e.posX > 2):
                     e.move("a")
                 else: 
@@ -159,11 +168,19 @@ class Round:
     
     
     def start(self, window):
+        # star positions
+        for i in range(10):
+            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '*'))
+        for i in range(15):
+            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '.'))
+        for i in range(10):
+            self.stars.append((random.randrange(22)+1, random.randrange(78)+1, '\u2727'))
+
         curses.noecho()
         curses.cbreak()
         window.nodelay(True)
         window.keypad(True)
-        printMap(self,window)
+        printMap(self,window,self.stars)
         window.box()
         window.refresh()
         lasers, rockets = 5, 5
@@ -173,7 +190,7 @@ class Round:
         playerHit = False
         ret = 0
         while(ret == 0):
-            printMap(self,window)
+            printMap(self,window,self.stars)
             window.refresh()
             try:
                 userInput = window.getkey()
@@ -195,7 +212,7 @@ class Round:
                 pass
             window.clear()
             window.box()
-            printMap(self,window)
+            printMap(self,window,self.stars)
             window.refresh()
             self.currentTime = time.time()
             if((self.currentTime - self.lastTime) > 0.05):
@@ -220,7 +237,7 @@ class Round:
             
             window.clear()
             window.box()
-            printMap(self,window)
+            printMap(self,window,self.stars)
             window.refresh()
         self.enemyShips.clear()
         self.attacks.clear()
@@ -233,8 +250,10 @@ def bossprint(bossShip, std):
         for j in range(-1,2):
             std.addstr(bossShip.posY + i, bossShip.posX + j, bossShip.icon)
 
-def printMap(roundObject,std):
+def printMap(roundObject,std,stars):
     global isBossLevel
+    for s in stars:
+        std.addstr(s[0],s[1],s[2])
     for s in roundObject.enemyShips:
         std.addstr(s.posY,s.posX,s.icon)
         if isBossLevel:

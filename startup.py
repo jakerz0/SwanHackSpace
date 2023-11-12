@@ -30,6 +30,7 @@ def startup(window):
     window.addstr(20, 1, "|_  )  /  \\  \\ \\/ / \\ \\/ /  * *                .            *           . .")
     window.addstr(21, 1, " / /  | () |  >  <   >  <.           .                *              .  .  ")
     window.addstr(22, 1, "/___|  \\__/  /_/\\_\\ /_/\\_\\                             .           *       ")
+    
     ret = 0
     while(True):
         try:
