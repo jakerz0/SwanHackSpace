@@ -7,7 +7,7 @@ def startup(window):
     # window.addstr(0, 0, str(curses.has_colors()))
     # window.addstr(2, 4, str(curses.has_extended_color_support()))
     
-    window.addstr(3, 6, '[s] Start Game')
+    window.addstr(3, 6, '[g] Start Game')
     window.addstr(4, 6, '[h] High Score: ' + highscore[1].strip() + ' -- ' + highscore[0].strip())
     window.addstr(5, 6, '[q] Quit')
 
@@ -30,7 +30,7 @@ def startup(window):
     while(True):
         try:
             ret = window.getkey()      
-            if(ret == 'q' or ret == 'h' or ret == 's'):
+            if(ret == 'q' or ret == 'h' or ret == 'g'):
                 break
         except curses.error:
             pass
