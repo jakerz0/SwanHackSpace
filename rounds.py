@@ -70,10 +70,15 @@ class Round:
         #         else: 
         #             return True #return true that it made it to the other end
         bossShip = self.enemyShips[0]
-        if(bossShip.posY > 4):
+        if(bossShip.posY < 4):
             bossShip.move('s')
-        elif(bossShip.posY < 20):
+        elif(bossShip.posY > 20):
             bossShip.move('w')
+        else:
+            if random.random() * 10 < 5:
+                bossShip.move('w')
+            else:
+                bossShip.move('s')
 
     def fireCannon(self):
         self.attacks.append(self.player.attack())
@@ -85,8 +90,10 @@ class Round:
             return False
 
     def enemyFire(self):
+        factor = 0.05
+        if isBossLevel: factor = 0.25
         for s in self.enemyShips:
-            if(random.random() < 0.05):
+            if(random.random() < factor):
                 self.attacks.append(s.attack())
     
     def shotMove(self):
@@ -105,12 +112,21 @@ class Round:
                 else:
                     a.move('d')
                     for e in self.enemyShips:
+                        if(isBossLevel):
+                            if e.posX - 1 == a.posX and (e.posY - 1 == a.posY or e.posY + 1 == a.posY or e.posY == a.posY):
+                                e.health -= 1
+                                if(e.health == 0):
+                                    self.enemyShips.remove(e)
+                                self.attacks.remove(a)
+                                self.player.score += 1
+
                         if(e.posX == a.posX and e.posY == a.posY): #if it hits, remove the ship and attack from respective arrays
                             e.health -= 1
                             if(e.health == 0):
                                 self.enemyShips.remove(e)
                             self.attacks.remove(a)
                             self.player.score += 1
+                        
         return False
     
     def enemyMove(self):
@@ -161,7 +177,9 @@ class Round:
                         ret = -1
                 if(self.enemiesDefeated()):
                     ret = 1
-                if(self.enemyMove()): #returns true if enemy made it to the other end
+                if(not isBossLevel and self.enemyMove()): #returns true if enemy made it to the other end
+                    ret = -1
+                elif len(self.enemyShips) > 0 and isBossLevel and self.bossMove():
                     ret = -1
                 self.lastTime = time.time()
 
