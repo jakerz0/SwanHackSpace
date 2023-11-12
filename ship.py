@@ -8,6 +8,7 @@ class Ship():
     armor: int
     speed: int
     money: int
+    score: int
     barriers: int
     posX: int
     posY: int
@@ -23,6 +24,7 @@ class Ship():
         self.armor = 0
         self.speed = spd
         self.money = 5
+        self.score = 0
         self.barriers = 1
         self.posX = x
         self.posY = y
@@ -50,7 +52,7 @@ class Ship():
         return (self.posX, self.posY)
     
     def attack(self):
-        return Shot(self.attackprotos[self.attackIdx], self.posX, self.posY)
+        return Shot(self.attackprotos[self.attackIdx], self.posX, self.posY, self.isPlayer)
     
     def isDead(self):
         if(self.health <= 0):

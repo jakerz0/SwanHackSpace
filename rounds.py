@@ -51,22 +51,53 @@ class Round:
             
         
 
+    def fireCannon(self):
+        self.attacks.append(self.player.attack())
+
+    def enemiesDefeated(self):
+        if(len(self.enemyShips) == 0):
+            return True
+        else:
+            return False
 
     def enemyFire(self):
         for s in self.enemyShips:
             if(random.random() < 0.05):
                 self.attacks.append(s.attack())
     
-    def enemyShotMove(self):
+    def shotMove(self):
         for a in self.attacks:
-            if(a.posX == 0):
-                self.attacks.remove(a)
-            else:
-                a.move('a')
-                playerHit = a.collideCheck(self.player.posX,self.player.posY)
-                if(playerHit):
-                    return True
+            if(a.isPlayer == False):
+                if(a.posX == 1):
+                    self.attacks.remove(a)
+                else:
+                    a.move('a')
+                    playerHit = a.collideCheck(self.player.posX,self.player.posY)
+                    if(playerHit):
+                        return True
+            else: #for when the player fires
+                if(a.posX == 79):
+                    self.attacks.remove(a)
+                else:
+                    a.move('d')
+                    for e in self.enemyShips:
+                        if(e.posX == a.posX and e.posY == a.posY): #if it hits, remove the ship and attack from respective arrays
+                            e.health -= 1
+                            if(e.health == 0):
+                                self.enemyShips.remove(e)
+                            self.attacks.remove(a)
+                            self.player.score += 1
         return False
+    
+    def enemyMove(self):
+        for e in self.enemyShips:
+            if(random.random() * e.speed > 0.9):
+                if(e.posX > 2):
+                    e.move("a")
+                else: 
+                    return True #return true that it made it to the other end
+        return False
+    
     
     def start(self, window):
         curses.noecho()
@@ -78,7 +109,7 @@ class Round:
         window.refresh()
         playerHit = False
         ret = 0
-        while(playerHit == False):
+        while(ret == 0):
             printMap(self,window)
             window.refresh()
             try:
@@ -87,6 +118,8 @@ class Round:
                     self.player.move(userInput)
                 if(userInput == 's'):
                     self.player.move(userInput)
+                if(userInput == 'c'):
+                    self.fireCannon()
             except curses.error:
                 pass
             window.clear()
@@ -97,8 +130,14 @@ class Round:
             if((self.currentTime - self.lastTime) > 0.05):
                 if(random.random() < 0.5):
                     self.enemyFire()
-                playerHit = self.enemyShotMove()
+                playerHit = self.shotMove()
                 if(playerHit == True):
+                    self.player.health -= 1
+                    if(self.player.health == 0):
+                        ret = -1
+                if(self.enemiesDefeated()):
+                    ret = 1
+                if(self.enemyMove()): #returns true if enemy made it to the other end
                     ret = -1
                 self.lastTime = time.time()
 
@@ -117,5 +156,8 @@ def printMap(roundObject,std):
     std.addstr(roundObject.player.posY,roundObject.player.posX,">")
     for a in roundObject.attacks:
         std.addstr(a.posY,a.posX,"~")
+    std.addstr(0,10, " Health: " + str(roundObject.player.health) +" ")
+    std.addstr(0,25, " Round: " + str(roundObject.roundNumber) + " ")
+    std.addstr(0,40, " Score: " + str(roundObject.player.score) + " ")
 
 
